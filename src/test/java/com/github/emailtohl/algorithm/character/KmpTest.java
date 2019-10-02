@@ -1,8 +1,10 @@
 package com.github.emailtohl.algorithm.character;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import org.junit.Test;
 
@@ -15,6 +17,25 @@ public class KmpTest {
 		int[] expect = {-1,0,0,1,2,3,4};
 		assertTrue(Arrays.equals(next, expect));
 		kmp.printNextArray(next);
+		
+		Random r = new Random();
+		char[] av = new char[] {'X', 'Y', 'Z'};
+		StringBuilder pattern = new StringBuilder();
+		for (int i = 0; i < 100; i++) {
+			pattern.append(av[r.nextInt(3)]);
+		}
+		next = kmp.getNextArray(pattern.toString());
+		// check
+		for (int i = 0; i < next.length; i++) {
+			int val = next[i];
+			if (val == -1) {
+				continue;
+			}
+			int rightStart = i - val;
+			for (int leftStart = 0; leftStart < val; leftStart++, rightStart++) {
+				assertEquals(pattern.charAt(leftStart), pattern.charAt(rightStart));
+			}
+		}
 	}
 
 	@Test
